@@ -20,7 +20,7 @@ import numpy as np
 '''
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='img')
 
 # Cacheインスタンスの作成
 cache = Cache(app, config={

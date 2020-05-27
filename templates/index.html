@@ -31,22 +31,22 @@
         <h2>Member Rotation</h2>
         <span id='routeList'></span>
         <hr/>
-        <table width='50%'>
-          <tr>
-            <td><span id='card0'></span></td>
-            <td><span id='card1'></span></td>
-            <td><span id='card2'></span></td>
-            <td><span id='card3'></span></td>
-            <td><span id='card4'></span></td>
-            <td><span id='card5'></span></td>
+        <table border="0" width="200" height="100">
+          <tr align="center">
+            <td id='tdcard0' valign="middle"><span id='card0'></span></td>
+            <td id='tdcard1' valign="middle"><span id='card1'></span></td>
+            <td id='tdcard2' valign="middle"><span id='card2'></span></td>
+            <td id='tdcard3' valign="middle"><span id='card3'></span></td>
+            <td id='tdcard4' valign="middle"><span id='card4'></span></td>
+            <td id='tdcard5' valign="middle"><span id='card5'></span></td>
           </tr>
-          <tr>
-            <td><input type='radio' name='area' id='rCard0'/></td>
-            <td><input type='radio' name='area' id='rCard1'/></td>
-            <td><input type='radio' name='area' id='rCard2'/></td>
-            <td><input type='radio' name='area' id='rCard3'/></td>
-            <td><input type='radio' name='area' id='rCard4'/></td>
-            <td><input type='radio' name='area' id='rCard5'/></td>
+          <tr align="center">
+            <td valign="middle"><input type='radio' name='area' id='rCard0'/></td>
+            <td valign="middle"><input type='radio' name='area' id='rCard1'/></td>
+            <td valign="middle"><input type='radio' name='area' id='rCard2'/></td>
+            <td valign="middle"><input type='radio' name='area' id='rCard3'/></td>
+            <td valign="middle"><input type='radio' name='area' id='rCard4'/></td>
+            <td valign="middle"><input type='radio' name='area' id='rCard5'/></td>
           </tr>
         </table>
         <br/>
@@ -207,11 +207,33 @@
             holdcards = data.players[playerPos].holdcards;
             for(var i = 0; i < 6; i++){
               if(i < holdcards.length){
-                $('#card'+i).text(holdcards[i]);
+
+                // switch(Math.floor(holdcards[i] / 5)){
+                switch(holdcards[i] % 5){
+                  case 0:
+                    $('#tdcard'+i).css("background-color","#e55050");
+                    break;
+                  case 1:
+                    $('#tdcard'+i).css("background-color","#50b4e5");
+                    break;
+                  case 2:
+                    $('#tdcard'+i).css("background-color","#e5b450");
+                    break;
+                  case 3:
+                    $('#tdcard'+i).css("background-color","#50e550");
+                    break;
+                }
+                if(holdcards[i] % 5 == 4){
+                  $('#card'+i).text('J');
+                  $('#tdcard'+i).css("background-color","#b450e5");
+                }else{
+                  $('#card'+i).text(Math.floor(holdcards[i] / 5));
+                }
                 $('#rCard'+i).val(holdcards[i]);
                 $('#rCard'+i).show();
               }else{
                 $('#card'+i).text('');
+                $('#tdcard'+i).css("background-color","#fff");
                 $('#rCard'+i).val('');
                 $('#rCard'+i).css('display', 'none');
               }
