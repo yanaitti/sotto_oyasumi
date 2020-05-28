@@ -58,7 +58,37 @@
         <span id='sleptList'></span>
       </div>
     </div>
-
+    <div style='display:none'>
+      <img id='img0' src='img/pic0.jpg'/>
+      <img id='img1' src='img/pic1.jpg'/>
+      <img id='img2' src='img/pic2.jpg'/>
+      <img id='img3' src='img/pic3.jpg'/>
+      <img id='img5' src='img/pic5.jpg'/>
+      <img id='img6' src='img/pic6.jpg'/>
+      <img id='img7' src='img/pic7.jpg'/>
+      <img id='img8' src='img/pic8.jpg'/>
+      <img id='img10' src='img/pic10.jpg'/>
+      <img id='img11' src='img/pic11.jpg'/>
+      <img id='img12' src='img/pic12.jpg'/>
+      <img id='img13' src='img/pic13.jpg'/>
+      <img id='img15' src='img/pic15.jpg'/>
+      <img id='img16' src='img/pic16.jpg'/>
+      <img id='img17' src='img/pic17.jpg'/>
+      <img id='img18' src='img/pic18.jpg'/>
+      <img id='img20' src='img/pic20.jpg'/>
+      <img id='img21' src='img/pic21.jpg'/>
+      <img id='img22' src='img/pic22.jpg'/>
+      <img id='img23' src='img/pic23.jpg'/>
+      <img id='img25' src='img/pic25.jpg'/>
+      <img id='img26' src='img/pic26.jpg'/>
+      <img id='img27' src='img/pic27.jpg'/>
+      <img id='img28' src='img/pic28.jpg'/>
+      <img id='img30' src='img/pic30.jpg'/>
+      <img id='img31' src='img/pic31.jpg'/>
+      <img id='img32' src='img/pic32.jpg'/>
+      <img id='img33' src='img/pic33.jpg'/>
+      <img id='imgj' src='img/picj.jpg'/>
+    </div>
     <script>
     var timeout = 1000;
     var timer = '';
@@ -264,7 +294,22 @@
         timer = setTimeout(status_check(gId, cId), timeout)
       }, timeout);
     }
-
+    //=====================================================
+    // <img>要素 → Base64形式の文字列に変換
+    //   img       : HTMLImageElement
+    //   mime_type : string "image/png", "image/jpeg" など
+    //=====================================================
+    function ImageToBase64(img, mime_type) {
+        // New Canvas
+        var canvas = document.createElement('canvas');
+        canvas.width  = img.width;
+        canvas.height = img.height;
+        // Draw Image
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        // To Base64
+        return canvas.toDataURL(mime_type);
+    }
     </script>
   </body>
 </html>
