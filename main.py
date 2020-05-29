@@ -112,7 +112,8 @@ def start_game(gameid):
 
     # delivery the cards
     for player in players:
-        while len(player['holdcards']) < 5:
+        player['holdcards'] = []
+        for idx in list(range(5)):
             player['holdcards'].append(stocks.pop(random.randint(0, len(stocks) - 1)))
 
     cache.set(gameid, game)
