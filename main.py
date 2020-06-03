@@ -40,9 +40,6 @@ def homepage():
 def create_game(nickname):
     game = {
         'status': 'waiting',
-        'routeidx': 0,
-        'routeid': '',
-        'slept': [],
         'players': []}
     player = {}
 
@@ -104,6 +101,8 @@ def start_game(gameid):
     random.shuffle(routelist)
     game['routelist'] = routelist
     game['routeid'] = routelist[0]['playerid']
+    game['routeidx'] = 0
+    game['slept'] = []
 
     players = game['players']
 
@@ -115,6 +114,7 @@ def start_game(gameid):
         player['holdcards'] = []
         for idx in list(range(5)):
             player['holdcards'].append(stocks.pop(random.randint(0, len(stocks) - 1)))
+        player['status'] = False
 
     cache.set(gameid, game)
     return json.dumps(game['routelist'])
