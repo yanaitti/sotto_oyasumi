@@ -1,8 +1,8 @@
-from flask import Flask, Response, render_template
+from flask import Flask, Response, render_template, url_for
 from flask_caching import Cache
 import uuid
 import random
-import collections
+from collections import Counter
 import json
 import os
 import copy
@@ -20,7 +20,36 @@ import numpy as np
 '''
 
 
-app = Flask(__name__, static_folder='img')
+app = Flask(__name__)
+
+
+@app.context_processor
+def override_url_for():
+    return dict(url_for=dated_url_for)
+
+
+def dated_url_for(endpoint, **values):
+    if endpoint == 'static':
+        filename = values.get('filename', None)
+        if filename:
+            file_path = os.path.join(app.root_path,
+                                     endpoint, filename)
+            values['q'] = int(os.stat(file_path).st_mtime)
+    return url_for(endpoint, **values)
+
+
+@app.after_request
+def add_header(r):
+    """
+    Add headers to both force latest IE rendering engine or Chrome Frame,
+    and also to cache the rendered page for 10 minutes.
+    """
+    r.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    r.headers["Pragma"] = "no-cache"
+    r.headers["Expires"] = "0"
+    r.headers['Cache-Control'] = 'public, max-age=0'
+    return r
+
 
 # Cacheインスタンスの作成
 cache = Cache(app, config={
@@ -151,15 +180,61 @@ def processing_game(gameid, playerid, cardnum):
 def setcard_game(gameid, playerid):
     game = cache.get(gameid)
 
-    for idx, player in enumerate(game['routelist']):
-        if player['playerid'] == playerid:
-            # go to the sleep
-            player['status'] = True
-            game['slept'].append(player)
-            game['routelist'].pop(idx)
+    pIdx, player = [(_pIdx, _player) for _pIdx, _player in enumerate(game['routelist']) if _player['playerid'] == playerid][0]
+
+    if len(game['slept']) == 0:
+        card = player['holdcards']
+        card_wo_j = [_c for _c in card if _c % 5 != 4]
+        card_j = [_c for _c in card if _c % 5 == 4]
+
+        # card = [0, 5, 7, 8, 14]
+        # # listをnumpy
+        card_np = np.array(card_wo_j)
+
+        # 5の商を算出
+        card2_np = card_np // 5
+        card2_np
+
+        # numpyを配列に変換
+        card_array = card2_np.tolist()
+
+        cc = Counter(card_array).most_common()
+        if cc[0][1] + len(card_j) < 4:
+            return 'ng'
+
+    # go to the sleep
+    player['status'] = True
+    game['slept'].append(player)
+    game['routelist'].pop(pIdx)
+
+    # for idx, player in enumerate(game['routelist']):
+    #     if player['playerid'] == playerid:
+    #         card = player['holdcards']
+    #         card_wo_j = [_c for _c in card if _c % 5 != 4]
+    #         card_j = [_c for _c in card if _c % 5 == 4]
+    #
+    #         # card = [0, 5, 7, 8, 14]
+    #         # # listをnumpy
+    #         card_np = np.array(card_wo_j)
+    #
+    #         # 5の商を算出
+    #         card2_np = card_np // 5
+    #         card2_np
+    #
+    #         # numpyを配列に変換
+    #         card_array = card2_np.tolist()
+    #
+    #         cc = Counter(card_array).most_common()
+    #         if cc[0][1] + len(card_j) >= 4:
+    #             # go to the sleep
+    #             player['status'] = True
+    #             game['slept'].append(player)
+    #             game['routelist'].pop(idx)
+    #         else:
+    #             return 'ng'
 
     # available check
-    cardtypes = np.array(player['holdcards'])
+    # cardtypes = np.array(player['holdcards'])
 
     cache.set(gameid, game)
     return 'ok'
