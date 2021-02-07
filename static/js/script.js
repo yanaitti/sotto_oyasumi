@@ -190,12 +190,18 @@ var status_check = function(gId, cId){
         if(data.routeid == cId){
           $('#nextPlayer').attr('disabled', false)
           $('#sleep').attr('disabled', true)
+          if(data.players.length -1 == data.slept.length){
+            $("#result_lose").dialog();
+          }
         }else{
           $('#nextPlayer').attr('disabled', true)
           if(!data.players[playerPos].status){
             $('#sleep').attr('disabled', false)
           }else{
             $('#sleep').attr('disabled', true)
+          }
+          if(data.players.length -1 == data.slept.length){
+            $("#result_win").dialog();
           }
         }
       }

@@ -5,7 +5,9 @@
     <title>そっとおやすみ ONLINE</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
   </head>
   <body>
@@ -56,16 +58,25 @@
           </tr>
         </table>
         <br/>
-        <input type='button' id='nextPlayer' value='次のユーザに渡す' /><br/>
+        <input type='button' id='nextPlayer' value='次のユーザに渡す/Send)' /><br/>
         次の人に渡すカードを選んで「次のユーザに渡す」ボタンを押してください。<br/>
+        You choose one which will pass to next player. and then push "Send" button<br/>
         <br/>
-        <input type='button' id='sleep' value='おやすみなさい' /><br/>
-        同じ数字のカードまたはジョーカーを含め４枚以上揃ったら、好きなタイミングで「おやすみなさい」ボタンを押してください。<br/>
+        <input type='button' id='sleep' value='おやすみなさい/Good night' /><br/>
+        同じ絵柄のカードまたはジョーカーを含め４枚以上揃ったら、好きなタイミングで「おやすみなさい」ボタンを押してください。<br/>
         また、誰かが「おやすみなさい」ボタンを押した後は、カードが揃っていなくても押せます。<br/>
+        If you have same charactor's card more 4 include Jocker, you can push "Good night" button anytime.<br/>
+        or if someone has already pushed "Good night", you can push "Good night" button anytime also.<br/>
       </div>
       <div id='sec3' style='display:none'>
         <span id='sleptList'></span>
       </div>
+    </div>
+    <div id='result_win' style='display:none' title="you're">
+      win
+    </div>
+    <div id='result_lose' style='display:none' title="you're">
+      lose
     </div>
   </body>
 </html>
